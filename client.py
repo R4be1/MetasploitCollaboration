@@ -46,7 +46,7 @@ def session_shell(session):
         print( shell.run_with_output(shell_command) )
 
 try:
-    client = MsfRpcClient('R4be1', port=55552)
+    client = MsfRpcClient("47", server="127.0.0.1", port=55552, username="R4be1")
 
 except Exception as e:
     error_print("MSFRpc Connect Error...")
@@ -78,7 +78,7 @@ while True:
         if command.split()[1].isdigit():
             session_shell( command.split()[1] )
 
-    if command.split("session")[1].isdigit():
+    if command.startswith("session") and command.split("session")[1].isdigit():
         session_shell( command.split("session")[1] )
 
     if command.strip() == "sessions":
