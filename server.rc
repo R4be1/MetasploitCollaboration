@@ -4,4 +4,4 @@ set LPORT 47000
 set ExitOnSession true
 exploit -jz
 
-load msgrpc Pass=R4be1
+load msgrpc ServerHost=0.0.0.0 ServerPort=55552 User=msf Pass=R4be1
