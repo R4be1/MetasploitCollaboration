@@ -37,6 +37,15 @@ def sessions_print():
                 f'''{_session["via_payload"].ljust(20)}'''
                 )
 
+def jobs_print():
+    for job in client.jobs.list:
+        _job = client.jobs.info(job)
+        print(
+        f'''\033[1m{str("["+job+"]").ljust(5)}\033[0m {_job.get("name").ljust(25)}  '''
+        f'''{str( _job["datastore"].get("LHOST") + ":" + _job["datastore"].get("LPORT") ).ljust(21)}  '''
+        f'''{_job["datastore"].get("payload")}'''
+        )
+
 def session_shell(session):
     shell=client.sessions.session(session)
     while True:
@@ -67,10 +76,10 @@ except Exception as e:
 
 else:
     succcess_print("MSFRpc Connect Succeed.")
-    succcess_print(f"Sessions {len(client.sessions.list.keys())}")
+    succcess_print(f"{len(client.sessions.list.keys())} Sessions ")
 
 def completer(text, state):
-    func = ['cls', 'clear', 'sessions', 'session ', 'exit'] + ["session"+str(_) for _ in client.sessions.list.keys()]
+    func = ['cls', 'clear', 'listeners', 'handlers', 'sessions', 'session ', 'exit'] + ["session"+str(_) for _ in client.sessions.list.keys()]
     matches = [_ for _ in func if _.startswith(text)]
     if state < len(matches):
         return matches[state]
@@ -96,6 +105,9 @@ while True:
 
         if command.strip() == "sessions":
             sessions_print()
+
+        if command.strip() == "listeners" or command.strip() == "handlers":
+            jobs_print()
 
         if command.strip() == "cls" or command.strip() == "clear" :
             print("\033c", end="")
