@@ -1,7 +1,7 @@
 import sys
+import time
 import readline
 from pymetasploit3.msfrpc import MsfRpcClient
-
 
 print('''\033[1m
            ____
@@ -17,7 +17,7 @@ print('''\033[1m
  |   : '  |/      '   | '/  :
  ;   | |`-'       |   :    /
  |   ;/            \   \ .'
- '---'              `---`    MetasploitCollaboration v1.0 by Rebel. 
+ '---'              `---`    MetasploitCollaboration v1.1 by Rebel. 
        \033[0m''')
 
 def succcess_print(String):
@@ -57,7 +57,34 @@ def session_shell(session):
                 print("\033c", end="")
             shell.write(shell_command)
             print( shell.read() )
-            #print( shell.run_with_output(shell_command, end_strs="") )
+            # print( shell.run_with_output(shell_command, end_strs="") )
+
+        except KeyboardInterrupt:
+            continue
+
+        except Exception as e:
+            print(e)
+
+def msfconsole_shell():
+    msfconsole_cid = client.consoles.console().cid
+    msfconsole = client.consoles.console(msfconsole_cid)
+    msfconsole.write( "" )
+    while client.consoles.console( msfconsole_cid ).is_busy():
+        time.sleep(0)
+    execute_results = msfconsole.read()
+    print(execute_results["data"])
+    while True:
+        try:
+            msfconsole_command = input(f"\033[1;34m{execute_results['prompt']}\033[0m")
+            if msfconsole_command.strip()=="break" or msfconsole_command.strip()=="exit":
+                break
+            if command.strip() == "cls" or command.strip() == "clear" :
+                print("\033c", end="")
+            msfconsole.write( msfconsole_command )
+            while client.consoles.console( msfconsole_cid ).is_busy():
+                time.sleep(0)
+            execute_results = msfconsole.read()
+            print( execute_results["data"] )
 
         except KeyboardInterrupt:
             continue
@@ -76,10 +103,10 @@ except Exception as e:
 
 else:
     succcess_print("MSFRpc Connect Succeed.")
-    succcess_print(f"{len(client.sessions.list.keys())} Sessions ")
+    succcess_print(f"{len(client.sessions.list.keys())} Sessions {len(client.jobs.list)} Jobs.")
 
 def completer(text, state):
-    func = ['cls', 'clear', 'listeners', 'handlers', 'sessions', 'session ', 'exit'] + ["session"+str(_) for _ in client.sessions.list.keys()]
+    func = ['cls', 'clear', 'listeners', 'handlers', 'sessions', 'session ', 'exit', 'msfconsole'] + ["session"+str(_) for _ in client.sessions.list.keys()]
     matches = [_ for _ in func if _.startswith(text)]
     if state < len(matches):
         return matches[state]
@@ -96,12 +123,18 @@ while True:
         if command.strip() == "exit":
             break
 
+        if not command.strip():
+            continue
+
         if command.split()[0] == "session" and len(command.split())>1:
             if command.split()[1].isdigit():
                 session_shell( command.split()[1] )
 
         if command.startswith("session") and command.split("session")[1].isdigit():
             session_shell( command.split("session")[1] )
+
+        if command.strip() == "msfconsole":
+            msfconsole_shell()
 
         if command.strip() == "sessions":
             sessions_print()
