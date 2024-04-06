@@ -27,5 +27,6 @@ cls or clear          :
 listeners or handlers :
 sessions              : list session.
 exit                  : exit
+msfconsole            : msfconsole
 session [number] or session[number] :
 ```
