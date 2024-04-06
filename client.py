@@ -43,6 +43,8 @@ def session_shell(session):
         shell_command = input(f"\033[1;34m[{session}]\033[0m >> ")
         if shell_command.strip()=="break" or shell_command.strip()=="exit" or shell_command.strip()=="bg":
             break
+        if command.strip() == "cls" or command.strip() == "clear" :
+            print("\033c", end="")
         print( shell.run_with_output(shell_command) )
 
 try:
@@ -58,7 +60,7 @@ else:
     succcess_print(f"Sessions {len(client.sessions.list.keys())}")
 
 def completer(text, state):
-    func = ['sessions', 'session ', 'exit'] + ["session"+str(_) for _ in client.sessions.list.keys()]
+    func = ['cls', 'clear', 'sessions', 'session ', 'exit'] + ["session"+str(_) for _ in client.sessions.list.keys()]
     matches = [_ for _ in func if _.startswith(text)]
     if state < len(matches):
         return matches[state]
@@ -70,11 +72,11 @@ readline.set_completer(completer)
 sessions_print()
 
 while True:
-    command = input("MC Client >> ")
+    command = input("\033[1;31mMC Client \033[0m>> ")
     if command.strip() == "exit":
         break
 
-    if command.split()[0] == "session":
+    if command.split()[0] == "session" and len(command.split())>1:
         if command.split()[1].isdigit():
             session_shell( command.split()[1] )
 
@@ -83,3 +85,6 @@ while True:
 
     if command.strip() == "sessions":
         sessions_print()
+
+    if command.strip() == "cls" or command.strip() == "clear" :
+        print("\033c", end="")
