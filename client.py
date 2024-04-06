@@ -17,7 +17,7 @@ print('''\033[1m
  |   : '  |/      '   | '/  :
  ;   | |`-'       |   :    /
  |   ;/            \   \ .'
- '---'              `---`    MetasploitCollaboration v1.0 by Rebel.
+ '---'              `---`    MetasploitCollaboration v1.0 
        \033[0m''')
 
 def succcess_print(String):
@@ -45,7 +45,6 @@ def session_shell(session):
             break
         print( shell.run_with_output(shell_command) )
 
-
 try:
     client = MsfRpcClient('R4be1', port=55552)
 
@@ -68,6 +67,7 @@ def completer(text, state):
 
 readline.parse_and_bind('tab: complete')
 readline.set_completer(completer)
+sessions_print()
 
 while True:
     command = input("MC Client >> ")
