@@ -8,8 +8,6 @@ curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/t
 msfconsole -r server.rc
 ```
 
-msfconsole -r server.rc
-
 ## Client
 ```
 python3 client.py
