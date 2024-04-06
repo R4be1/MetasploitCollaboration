@@ -18,6 +18,7 @@ load msgrpc ServerHost=127.0.0.1 ServerPort=55552 User=R4be1 Pass=47
 
 ## Client
 ```
+python3 -m pip install pymetasploit3
 python3 client.py
 ```
 ![图片](https://github.com/R4be1/MetasploitCollaboration/assets/110738599/aa04923c-eea7-4681-b03f-7c34b120137e)
