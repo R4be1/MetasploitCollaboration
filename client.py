@@ -48,7 +48,8 @@ def session_shell(session):
         print( shell.run_with_output(shell_command) )
 
 try:
-    client = MsfRpcClient("47", server="127.0.0.1", port=55552, username="R4be1")
+    MsfServer = "127.0.0.1" if len(sys.argv)<2 else sys.argv[1]
+    client = MsfRpcClient("47", server=MsfServer, port=55552, username="R4be1")
 
 except Exception as e:
     error_print("MSFRpc Connect Error...")
