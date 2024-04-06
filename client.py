@@ -17,7 +17,7 @@ print('''\033[1m
  |   : '  |/      '   | '/  :
  ;   | |`-'       |   :    /
  |   ;/            \   \ .'
- '---'              `---`    MetasploitCollaboration v1.0 
+ '---'              `---`    MetasploitCollaboration v1.0 by Rebel. 
        \033[0m''')
 
 def succcess_print(String):
@@ -41,11 +41,20 @@ def session_shell(session):
     shell=client.sessions.session(session)
     while True:
         shell_command = input(f"\033[1;34m[{session}]\033[0m >> ")
-        if shell_command.strip()=="break" or shell_command.strip()=="exit" or shell_command.strip()=="bg":
-            break
-        if command.strip() == "cls" or command.strip() == "clear" :
-            print("\033c", end="")
-        print( shell.run_with_output(shell_command) )
+        try:
+            if shell_command.strip()=="break" or shell_command.strip()=="exit" or shell_command.strip()=="bg":
+                break
+            if command.strip() == "cls" or command.strip() == "clear" :
+                print("\033c", end="")
+            shell.write(shell_command)
+            print( shell.read() )
+            #print( shell.run_with_output(shell_command, end_strs="") )
+
+        except KeyboardInterrupt:
+            continue
+
+        except Exception as e:
+            print(e)
 
 try:
     MsfServer = "127.0.0.1" if len(sys.argv)<2 else sys.argv[1]
@@ -73,19 +82,27 @@ readline.set_completer(completer)
 sessions_print()
 
 while True:
-    command = input("\033[1;31mMC Client \033[0m>> ")
-    if command.strip() == "exit":
-        break
+    try:
+        command = input("\033[1;31mMC Client \033[0m>> ")
+        if command.strip() == "exit":
+            break
 
-    if command.split()[0] == "session" and len(command.split())>1:
-        if command.split()[1].isdigit():
-            session_shell( command.split()[1] )
+        if command.split()[0] == "session" and len(command.split())>1:
+            if command.split()[1].isdigit():
+                session_shell( command.split()[1] )
 
-    if command.startswith("session") and command.split("session")[1].isdigit():
-        session_shell( command.split("session")[1] )
+        if command.startswith("session") and command.split("session")[1].isdigit():
+            session_shell( command.split("session")[1] )
 
-    if command.strip() == "sessions":
-        sessions_print()
+        if command.strip() == "sessions":
+            sessions_print()
 
-    if command.strip() == "cls" or command.strip() == "clear" :
-        print("\033c", end="")
+        if command.strip() == "cls" or command.strip() == "clear" :
+            print("\033c", end="")
+
+    except KeyboardInterrupt:
+        print()
+        continue
+
+    except Exception as e:
+        print(e)
