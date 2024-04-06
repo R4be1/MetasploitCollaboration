@@ -5,6 +5,9 @@
 curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
   chmod 755 msfinstall && \
   ./msfinstall
+
+git clone https://github.com/R4be1/MetasploitCollaboration.git
+cd MetasploitCollaboration/
 msfconsole -r server.rc
 ```
 or msfconsole execute:
