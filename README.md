@@ -12,3 +12,4 @@ msfconsole -r server.rc
 ```
 python3 client.py
 ```
+![图片](https://github.com/R4be1/MetasploitCollaboration/assets/110738599/aa04923c-eea7-4681-b03f-7c34b120137e)
