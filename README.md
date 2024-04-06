@@ -30,3 +30,12 @@ exit                  : exit
 msfconsole            : msfconsole
 session [number] or session[number] :
 ```
+## !
+```
+Note that there may be no echo during interaction
+because the call is RPC
+so it may be that the data echo is not timely
+in general, press enter more and it will be echoed
+and in special cases, press it a few more times
+ha ha ha ha ha~
+```
